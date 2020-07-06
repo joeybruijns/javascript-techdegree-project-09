@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const routes = require('./routes');
 
 const {sequelize, models} = require('./db');
-const {User, Course} = models;
+// const {User, Course} = models;
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -14,10 +14,11 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 
+// setup request body JSON parsing
+app.use(express.json());
+
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
-
-// TODO setup your api routes here
 
 console.log('Testing the connection to the database..');
 (async () => {
@@ -27,8 +28,6 @@ console.log('Testing the connection to the database..');
 
         console.log('Synchronizing the models with the database...');
         await sequelize.sync();
-
-        process.exit();
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
             const errors = error.errors.map(err => err.message);
@@ -37,16 +36,16 @@ console.log('Testing the connection to the database..');
             throw error;
         }
     }
-});
+})();
 
-// setup a friendly greeting for the root route
+// project root route
 app.get('/', (req, res) => {
     res.json({
         message: 'Welcome to the REST API project!',
     });
 });
 
-// add the routes
+// adding all other routes
 app.use('/api', routes);
 
 // send 404 if no other route matched
