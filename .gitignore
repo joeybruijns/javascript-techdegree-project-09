@@ -62,3 +62,7 @@ typings/
 
 # SQLite database file
 *.db
+.idea/javascript-techdegree-project-09.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
