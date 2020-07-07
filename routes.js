@@ -1,14 +1,15 @@
 'use strict'
 
 const express = require('express');
+const router = express.Router();
+
 const bcryptjs = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
-const auth = require('basic-auth');
 
 const {models} = require('./db');
 const {User, Course} = models;
-
-const router = express.Router();
+const utilities = require('./utilities');
+const {authenticateUser} = utilities;
 
 // handler function for the routes
 function asyncHandler(callback) {
@@ -18,44 +19,6 @@ function asyncHandler(callback) {
         } catch (error) {
             res.status(500);
         }
-    }
-}
-
-// TODO: move this function to helper function folder?
-// check if a user is authenticated
-const authenticateUser = async (req, res, next) => {
-    let notAuthenticated = null;
-
-    const userCredentials = auth(req);
-
-    if (userCredentials) {
-        const user = await User.findOne({
-           where: {
-               emailAddress: userCredentials.name
-           }
-        });
-
-        if (user) {
-            const authenticated = bcryptjs.compareSync(userCredentials.pass, user.password);
-
-            if (authenticated) {
-                req.currentUser = user;
-            } else {
-                notAuthenticated = `Authentication failure for username: ${user.emailAddress}`;
-            }
-        } else {
-            notAuthenticated = `No user found for ${user.emailAddress}`;
-        }
-    } else {
-        notAuthenticated = 'Authentication header not found..';
-    }
-
-    // return 401 - Unauthorized if user authentication failed
-    if (notAuthenticated) {
-        console.warn(notAuthenticated);
-        res.status(401).json({message: 'Access Denied'});
-    } else {
-        next();
     }
 }
 
