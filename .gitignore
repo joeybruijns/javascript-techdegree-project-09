@@ -67,3 +67,4 @@ typings/
 .idea/modules.xml
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.DS_Store

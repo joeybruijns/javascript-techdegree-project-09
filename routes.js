@@ -3,7 +3,7 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
-const basicAuth = require('basic-auth');
+const auth = require('basic-auth');
 
 const {models} = require('./db');
 const {User, Course} = models;
@@ -23,16 +23,20 @@ function asyncHandler(callback) {
 
 // TODO: move this function to helper function folder?
 // check if a user is authenticated
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
     let notAuthenticated = null;
 
-    const userCredentials = basicAuth(req);
+    const userCredentials = auth(req);
 
     if (userCredentials) {
-        const user = User.get(user => user.emailAddress === userCredentials.emailAddress);
+        const user = await User.findOne({
+           where: {
+               emailAddress: userCredentials.name
+           }
+        });
 
         if (user) {
-            const authenticated = bcryptjs.compareSync(user.password, userCredentials.password);
+            const authenticated = bcryptjs.compareSync(userCredentials.pass, user.password);
 
             if (authenticated) {
                 req.currentUser = user;
