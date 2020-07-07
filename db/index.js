@@ -24,10 +24,10 @@ fs
 
 // if available, call method to create the association
 Object.keys(models).forEach((modelName) => {
-   if (models[modelName].associate) {
-       console.info(`Configuring the associations for the ${modelName} model...`);
-       models[modelName].associate(models);
-   }
+    if (models[modelName].associate) {
+        console.info(`Configuring the associations for the ${modelName} model...`);
+        models[modelName].associate(models);
+    }
 });
 
 module.exports = {

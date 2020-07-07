@@ -23,7 +23,7 @@ app.use(morgan('dev'));
 console.log('Testing the connection to the database..');
 (async () => {
     try {
-        console.log("connecting to dabase was succesful!");
+        console.log("Database connection is successful!");
         await sequelize.authenticate();
 
         console.log('Synchronizing the models with the database...');
