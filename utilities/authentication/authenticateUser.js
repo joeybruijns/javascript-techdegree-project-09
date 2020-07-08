@@ -6,7 +6,9 @@ const auth = require('basic-auth');
 const {models} = require('../../db');
 const {User, Course} = models;
 
-// check if a user is authenticated
+/*
+    Function for checking if the user is authenticated or not
+*/
 const authenticateUser = async (req, res, next) => {
     let notAuthenticated = null;
 
