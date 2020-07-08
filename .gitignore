@@ -64,6 +64,7 @@ typings/
 *.db
 
 # IDE specific files
+.idea
 .idea/javascript-techdegree-project-09.iml
 .idea/misc.xml
 .idea/modules.xml
