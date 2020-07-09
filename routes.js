@@ -162,10 +162,10 @@ router.post('/courses', authenticateUser, [
     }
 
     const user = req.currentUser;
+    const course = req.body;
 
     // create a new course
-    const course = req.body;
-    await Course.create({
+    const newCourse = await Course.create({
         title: course.title,
         description: course.description,
         estimatedTime: course.estimatedTime,
@@ -173,7 +173,7 @@ router.post('/courses', authenticateUser, [
         userId: user.id
     });
 
-    res.location(`/courses/${course.id}`);
+    res.location(`/courses/${newCourse.id}`);
 
     // set status to 201 Created and end the response
     return res.status(201).end();
